@@ -1,0 +1,2 @@
+This WC-Engine demonstration simulation is dependent on SDL2 and OpenGL3.2
+to be able to be compiled.
