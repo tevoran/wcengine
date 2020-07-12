@@ -18,7 +18,7 @@ int sim_init()
         printf("\nSDL intern initialisation error\n");
         return 1;
     }
-    window=SDL_CreateWindow("WC-ENGINE",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,640,640,SDL_WINDOW_OPENGL);
+    window=SDL_CreateWindow("WC-ENGINE",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,800,800,SDL_WINDOW_OPENGL);
     if(window==NULL)
     {
         printf("\nCouldn't create SDL window\n");
@@ -43,7 +43,7 @@ int sim_init()
     printf("done\n");
     
     //setting background color
-    glClearColor(0.0f, 0.0f, 0.25f, 1.0f); //black background
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); //black background
     glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
     
