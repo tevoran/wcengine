@@ -5,6 +5,15 @@ int wce_create_planet(long seed)
 It creates pseudorandomly the basic parameters for the world that uses the weather and climate simulation.
 And the function creates an array of data.
 
+Most entries have a size of 8 bytes because of the very common 64 bit machines. It is safer to use 8 bytes
+instead of 4 bytes, which could cause issues.
+
 [byte]  |   [content]
 
 0-15    |   name of the world
+
+16-23   |   temperature of the sun (kelvin)
+
+24-31   |   diameter of the sun (meters)
+
+32-40   |   distance from the sun (meters)
