@@ -1,0 +1,10 @@
+wc-engine functions that need an explanation:
+
+int wce_create_planet(long seed)
+
+It creates pseudorandomly the basic parameters for the world that uses the weather and climate simulation.
+And the function creates an array of data.
+
+[byte]  |   [content]
+
+0-15    |   name of the world
