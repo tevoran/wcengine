@@ -4,6 +4,6 @@ SIM_SRC:=$(wildcard src/include/simulation/*.c)
 WCE_SRC:=$(wildcard src/include/wce/*.c)
 CFLAGS= -Isrc/include/ -lSDL2 -lGL -o main
 
-main: src/*
+main: $(SRC) $(SIM_SRC) $(WCE_SRC)
 
 	$(CC) $(SRC) $(SIM_SRC) $(WCE_SRC) $(CFLAGS)
