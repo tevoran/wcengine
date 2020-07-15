@@ -23,8 +23,20 @@ struct planet
     double g;    //planetary gravity
 };
 
+//time variable
 
+uint64_t wce_time; //time in seconds
+uint64_t wce_time_SDL; //the SDL time
+float wce_speed; //the speed of the engine
+
+//functions
 struct planet wce_create_planet(long seed);
 long wce_random(long seed);
+
+    //time functions
+    void wce_time_start(); //start the time counter
+    uint64_t wce_time_get(); //get the current time in s
+    void wce_time_set(uint64_t new_time); //set the time in seconds
+    void wce_set_speed(float speed); //set the speed 1=real time and 2 is twice as fast and so one
 
 #endif
