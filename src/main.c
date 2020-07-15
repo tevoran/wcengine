@@ -11,6 +11,7 @@ int main()
     if(sim_init()!=0)
     {
         printf("Couldn't initialise the simulation\n");
+        return 0;
     }
     
     printf("seed=%li\n",seed);
@@ -23,7 +24,7 @@ int main()
     wce_time_get();
     wce_time_set(200);
     wce_set_speed(100);
-    SDL_Delay(3000);
+    SDL_Delay(500);
     wce_time_get();
 
     
