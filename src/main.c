@@ -4,7 +4,7 @@
 #include "wce/wce.h"
 #include "simulation/sim.h"
 
-long seed=12345678;
+long seed=51;//max 8 digits
 
 int main()
 {
@@ -14,12 +14,9 @@ int main()
     }
     
     printf("seed=%li\n",seed);
-    int i=100;
-    while(i>0)
-    {
-        wce_create_planet(seed+i);
-        i--;
-    }
+    wce_create_planet(seed);
+    
+    
     SDL_Delay(3000);
 
     

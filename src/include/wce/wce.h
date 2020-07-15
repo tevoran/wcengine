@@ -15,6 +15,12 @@ struct planet
     uint32_t black_temperature; // world's mean black body temperature in Kelvin
     uint32_t greenhouse; //greenhouse effect additional temperature in Kelvin
     uint32_t temperature; //temperature including black body temperature and greenhouse effect
+    uint64_t year;  //time that's necessary for a year in seconds
+    uint64_t day;   //time for one day on the planet in seconds
+    float axis_tilt; //tilt of the rotation axis
+    uint64_t size; //planetary diameter in meters
+    double density; //planetary density
+    double g;    //planetary gravity
 };
 
 

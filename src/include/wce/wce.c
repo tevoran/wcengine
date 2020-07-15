@@ -7,7 +7,7 @@
 
 struct planet wce_create_planet(long seed)
 {
-    printf("Creating planet from seed\n");
+    printf("Creating planet from seed %li\n",seed);
     
     struct planet world;    
     //generating name of the planet
@@ -121,7 +121,7 @@ struct planet wce_create_planet(long seed)
         luminosity_sun=world.sun_luminosity/10000000000;
         luminosity_sun=luminosity_sun/10000000000;
         luminosity_sun=luminosity_sun/3900000;
-        printf("Luminosity of star is %f suns\n",luminosity_sun);
+        printf("Luminosity of star is %f suns\n",luminosity_sun);//luminosity_sun is the luminosity compared to our real life sun
         
         
         //creating the planet's albedo
@@ -147,7 +147,7 @@ struct planet wce_create_planet(long seed)
         
             if(i==999)
             {  
-                printf("[ERROR] error while creating planet, there was no suitable distance found\n");
+                printf("[ERROR] error while creating planet, there was no suitable distance found\n[ERROR] bad seed\n");
                 return world;
             }
             printf("Distance %lu km\n",(world.sun_distance/1000));
@@ -159,6 +159,62 @@ struct planet wce_create_planet(long seed)
         world.temperature=world.greenhouse+world.black_temperature;
         
             printf("Planetary temperature: %li °C\n",((signed long)world.temperature-273));
+            
+        //creating the timespan of a year
+        double mass_sun=sqrt(sqrt(luminosity_sun)); //~LM^4
+        double year;
+        
+        
+        year=sqrt(((4*3.1415*3.1415)*(double)world.sun_distance*(double)world.sun_distance*(double)world.sun_distance/(mass_sun*2*10000000000*10000000000*10000000000*6.67*0.000000000001)));
+        world.year=(uint64_t)year;
+        printf("Year length %ld days\n",(((world.year/60)/60)/24));
+        
+        //creating day length
+        later_seed=wce_random(later_seed);
+        int day_length_chance=later_seed%5;
+        if(day_length_chance==4)
+        {
+            later_seed=wce_random(later_seed)%(60*60*60*24);
+            world.day=later_seed;
+        } else
+        {
+            later_seed=wce_random(later_seed)%(50*60*60);
+            world.day=later_seed;
+        }
+        //tidally locking planets
+        if(world.year<world.day || world.year<(40*60*60*24)) //if year is shorter than the day the rotation is tidally locked
+        {
+            world.day=world.year;
+            printf("Planet is tidally locked\n");
+        }
+
+        printf("Day length %f days\n",((((float)world.day/60)/60)/24));
+        
+        //tilt of the rotation axis
+        later_seed=wce_random(later_seed);
+        world.axis_tilt=((float)(later_seed%45000))/1000;//axial tilt in degrees;
+        
+        printf("Axial tilt: %f°\n",world.axis_tilt);
+        
+        //creation of planetary diameter
+        later_seed=wce_random(later_seed);
+        world.size=(later_seed%15000000)+5000000;//minimun size 5000km
+        
+        printf("Planetary diameter is %lu km\n",(world.size/1000));
+        
+        //creating planetary density
+        later_seed=wce_random(later_seed);
+        world.density=later_seed%4800;
+        world.density=(world.density/1000)+3;
+        printf("Planetary density is %f g/cm3\n",world.density);
+        
+        //creating surface gravity
+        world.g=4*3.1415*0.000000000067*1000*world.density*(double)world.size/6;
+        
+        printf("Surface gravity is %f m/s2\n",world.g);
+        
+        return world;
+        
 }
 
 //randomgenerator (after Blum-Blum-Shub)
