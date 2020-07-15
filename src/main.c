@@ -14,7 +14,6 @@ int main()
     }
     
     printf("seed=%li\n",seed);
-    
     int i=100;
     while(i>0)
     {

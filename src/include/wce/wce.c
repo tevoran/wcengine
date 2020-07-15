@@ -1,24 +1,24 @@
 #include "wce.h"
 
 #include <stdio.h>
+#include <inttypes.h>
+#include <math.h>
 
-//global variables
-char wce_planet_name[]="";
 
-
-int wce_create_planet(long seed)
+struct planet wce_create_planet(long seed)
 {
     printf("Creating planet from seed\n");
     
+    struct planet world;    
     //generating name of the planet
     //
+    
     //data sets
         char initial_letter[16]={"BDFGHJKLMNPRSTVY"};
         char vowel[5]={"aeiou"};
         char consonant[16]={"bdfghjklmnprstvy"};
     
-    char reserved_space[40]; //reserved space for the name and all the other data about the world
-        char *name_of_planet=&reserved_space[0];
+        char *name_of_planet=&world.name[0];
     
         long later_seed=wce_random(seed); //copying seed nummer
         int letter;//letter lottery
@@ -64,14 +64,12 @@ int wce_create_planet(long seed)
         name_of_planet++;
         *name_of_planet=0;
     
-        printf("Planet name: %s\n", reserved_space);
+        printf("Planet name: %s\n", world.name);
 
     
 
     //creating temperature of the planets sun
     printf("Creating sun\n");
-    
-        long *sun_temperature=(long*)&reserved_space[15];
     
         int temperature_range;
     
@@ -80,17 +78,16 @@ int wce_create_planet(long seed)
         if(temperature_range==4)
         {
             later_seed=wce_random(later_seed);
-            *sun_temperature=(later_seed%18000)+1800;
+            world.sun_temperature=(later_seed%18000)+1800;
         }
         if(temperature_range!=4)
         {
             later_seed=wce_random(later_seed);
-            *sun_temperature=(later_seed%4000)+1800;
+            world.sun_temperature=(later_seed%4000)+1800;
         }
-        printf("Planet's sun's temperature is: %li Kelvin\n",*sun_temperature);
+        printf("Planet's sun's temperature is: %lu Kelvin\n",world.sun_temperature);
 
         //creating diameter of the planets sun
-        long *sun_size=(long *)&reserved_space[23];
 
         int size_range;
 
@@ -101,36 +98,67 @@ int wce_create_planet(long seed)
         if(size_range==4)
         {
             later_seed=wce_random(later_seed);
-            *sun_size=later_seed*1000;
+            world.sun_size=later_seed*1000;
         }
         if(size_range!=4)
         {
             later_seed=wce_random(later_seed);
-            *sun_size=(later_seed%2000000)*1000;
+            world.sun_size=(later_seed%2000000)*1000;
         }
-        printf("Planet's sun's size is: %li Meter\n",*sun_size);
+        printf("Planet's sun's size is: %lu Meter\n",world.sun_size);
     
     
-        //creating distance between the planet and the sun
-        long long *planet_distance=(long long*)&reserved_space[31];
-        double luminosity;
+        //calculating sun's luminosity
         double luminosity_sun;
     
         //luminosity formula for stars
         double four_pi=4*3.1415;
-        double size_square=((*sun_size)/2)*((*sun_size)/2);
-        double temperature_four=(*sun_temperature)*(*sun_temperature)*(*sun_temperature)*(*sun_temperature);
-    
-        luminosity=four_pi*size_square*5.670373*0.00000001*temperature_four;
+        double size_square=(world.sun_size/2)*(world.sun_size/2);
+        double temperature_four=(world.sun_temperature)*(world.sun_temperature)*(world.sun_temperature)*(world.sun_temperature);
+        world.sun_luminosity=four_pi*size_square*5.670373*0.00000001*temperature_four;
     
         //compare luminosity with our sun
-        luminosity_sun=luminosity/10000000000;
+        luminosity_sun=world.sun_luminosity/10000000000;
         luminosity_sun=luminosity_sun/10000000000;
         luminosity_sun=luminosity_sun/3900000;
         printf("Luminosity of star is %f suns\n",luminosity_sun);
         
-    
-    
+        
+        //creating the planet's albedo
+        later_seed=wce_random(later_seed);
+        world.albedo=((float)(later_seed%200)/1000)+0.2;
+        printf("Albedo: %f\n",world.albedo);
+        
+        //creating surface temperature without the greenhouse effect and the distance between sun and planet
+        world.black_temperature=0;
+        
+        int i=0;
+        while((world.black_temperature<200 || world.black_temperature>300) && i<999)
+        {
+            later_seed=wce_random(later_seed);
+            world.sun_distance=later_seed*1000;
+        
+            double albedo_4_sqrt=sqrt(sqrt((1-world.albedo)));// (1-a)^1/4
+            double sqrt_radii=sqrt((double)(world.sun_size/(4*(double)world.sun_distance))); // (R/2a)^1/2
+            world.black_temperature=(double)(albedo_4_sqrt*sqrt_radii*(double)world.sun_temperature);
+
+            i++;
+        }
+        
+            if(i==999)
+            {  
+                printf("[ERROR] error while creating planet, there was no suitable distance found\n");
+                return world;
+            }
+            printf("Distance %lu km\n",(world.sun_distance/1000));
+            
+        //adding greenhouse effect
+        later_seed=wce_random(later_seed);
+        world.greenhouse=later_seed%70;
+        printf("Additional greenhouse effect with %u Kelvin\n",world.greenhouse);
+        world.temperature=world.greenhouse+world.black_temperature;
+        
+            printf("Planetary temperature: %li °C\n",((signed long)world.temperature-273));
 }
 
 //randomgenerator (after Blum-Blum-Shub)
