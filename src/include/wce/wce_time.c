@@ -16,8 +16,8 @@ void wce_time_start()
 
 uint64_t wce_time_get() //get the current time in s
 {
-    wce_time_SDL=(uint64_t)SDL_GetTicks()/1000;
-    wce_time=((wce_time_SDL-wce_time_SDL_old)*wce_speed)+wce_time; //adding the time that has passed multiplied with the speed factor to the WCE time
+    wce_time_SDL=(uint64_t)SDL_GetTicks();
+    wce_time=(((wce_time_SDL-wce_time_SDL_old)*wce_speed)/1000)+wce_time; //adding the time that has passed multiplied with the speed factor to the WCE time
     printf("WCE time is %lu s\n",wce_time);
     wce_time_SDL_old=wce_time_SDL; //preparing for the next function call
     return wce_time; //return the time value
