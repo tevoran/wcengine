@@ -15,4 +15,7 @@ int sim_init(); //the initialising function that tries to start everything prope
 void sim_swap_buffer(); //swapping buffers to display what has been drawn
 
 
+//loading shader
+int sim_load_gl_shaders();
+
 #endif

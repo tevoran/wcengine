@@ -6,6 +6,13 @@
 
 long seed=5;//max 8 digits
 
+struct vec3{ //vector struct for Cartesian vectors
+    GLfloat x;
+    GLfloat y;
+    GLfloat z;
+};
+
+
 int main()
 {
     if(sim_init()!=0)
@@ -21,11 +28,41 @@ int main()
     
     //starting wce_time
     wce_time_start();
-    wce_time_get();
-    wce_time_set(200);
-    wce_set_speed(100);
-    SDL_Delay(500);
-    wce_time_get();
+
+    //testing OpenGL
+
+    //loading shaders
+    sim_load_gl_shaders();
+    
+    GLuint VertexArrayID;
+    glGenVertexArrays(1, &VertexArrayID);
+    
+    static const GLfloat g_vertex_buffer_data[] =
+    {
+        -1.0f,-1.0f,0.0f,
+        1.0f,-1.0f,0.0f,
+        0.0f,1.0f,0.0f,
+    };
+    
+    glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
+    
+    //show shit
+    glVertexAttribPointer
+    (
+        0,
+        3,          //size
+        GL_FLOAT,   //type
+        GL_FALSE,   //normalized
+        0,          //stride
+        (void*)0    //array buffer offset
+    );
+    
+    glBindVertexArray(VertexArrayID);
+    
+    glDrawArrays(GL_TRIANGLES,0,3);
+    
+    //sim_swap_buffer();
+    SDL_Delay(1000);
 
     
     SDL_Quit();

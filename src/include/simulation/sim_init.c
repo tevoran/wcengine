@@ -61,7 +61,7 @@ int sim_init()
     printf("done\n");
 
     //setting background color
-    glClearColor(0.9f, 0.9f, 0.9f, 1); //black background
+    glClearColor(0.0f, 0.0f, 0.0f, 0); //black background
     glClear(GL_COLOR_BUFFER_BIT);
     sim_swap_buffer();
 
