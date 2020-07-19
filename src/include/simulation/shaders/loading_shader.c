@@ -12,6 +12,7 @@ int sim_load_gl_shaders()
     int shader_size;
     FILE *shader_file;
     char *vertex_shader_string;
+    char *fragment_shader_string;
 
     
     //loading vertex shader
@@ -35,7 +36,25 @@ int sim_load_gl_shaders()
         fgets(vertex_shader_string, shader_size, shader_file);
         printf("done\n");
 
+    //loading fragment shader
+    printf("Loading Fragment Shader...");
+    
+    shader_file=fopen("src/include/simulation/shaders/fragment_shader.glsl","r");
+    if(shader_file==NULL)//error message if there is an error while reading the fragment shader file
+    {
+        printf("\n[ERROR] error while readind fragment shader file\n");
+        return 1;
+    }
 
+        //determining file size for memory allocation
+        fseek(shader_file, 0, SEEK_END);
+        shader_size=ftell(shader_file);
+        fseek(shader_file, 0, SEEK_SET);
+        
+        //allocating memory
+        fragment_shader_string=malloc(shader_size);
+        fgets(fragment_shader_string, shader_size, shader_file);
+        printf("done\n");
     
     return 0;
 }
