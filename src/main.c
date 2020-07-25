@@ -4,7 +4,7 @@
 #include "wce/wce.h"
 #include "simulation/sim.h"
 
-long seed=5;//max 8 digits
+long seed=508;//max 8 digits
 
 struct vec3{ //vector struct for Cartesian vectors
     GLfloat x;
@@ -61,8 +61,8 @@ int main()
     
     glDrawArrays(GL_TRIANGLES,0,3);
     
-    //sim_swap_buffer();
-    SDL_Delay(1000);
+    sim_swap_buffer();
+    SDL_Delay(3000);
 
     
     SDL_Quit();
