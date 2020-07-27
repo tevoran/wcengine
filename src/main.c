@@ -29,13 +29,16 @@ int main()
     //starting wce_time
     wce_time_start();
 
+
     //testing OpenGL
 
     //loading shaders
     sim_load_gl_shaders();
     
     GLuint VertexArrayID;
+    GLuint VertexBufferID;
     glGenVertexArrays(1, &VertexArrayID);
+    glGenBuffers(1, &VertexBufferID);
     
     static const GLfloat g_vertex_buffer_data[] =
     {
@@ -44,8 +47,11 @@ int main()
         0.0f,1.0f,0.0f,
     };
     
+    glBindVertexArray(VertexArrayID);
+    glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
     glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
     
+    glEnableVertexAttribArray(0);
     //show shit
     glVertexAttribPointer
     (
@@ -56,8 +62,6 @@ int main()
         0,          //stride
         (void*)0    //array buffer offset
     );
-    
-    glBindVertexArray(VertexArrayID);
     
     glDrawArrays(GL_TRIANGLES,0,3);
     
