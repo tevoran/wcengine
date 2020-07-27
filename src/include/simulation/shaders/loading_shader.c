@@ -41,7 +41,6 @@ int sim_load_gl_shaders()
         //allocating memory
         vertex_shader_string=malloc(shader_size+1);
         fread(vertex_shader_string, shader_size+1,1,shader_file);
-        printf("\nvertex shader:\n%s",vertex_shader_string);
         
         printf("done\n");
 
@@ -63,7 +62,6 @@ int sim_load_gl_shaders()
         //allocating memory
         fragment_shader_string=malloc(shader_size+1);
         fread(fragment_shader_string, shader_size+1,1,shader_file);
-        printf("\nfragment shader:\n%s",fragment_shader_string);
         printf("done\n");
         
     //creating shaders
@@ -89,11 +87,7 @@ int sim_load_gl_shaders()
         glShaderSource(vertex_shader_reference, 1, &vertex_const_char, NULL);
         
         error=glGetError();
-        if(error==GL_NO_ERROR)
-        {
-            printf("All fine while giving vertex shader source to OpenGL\n");
-        }
-        else
+        if(error!=GL_NO_ERROR)
         {
             printf("[ERROR] error while giving vertex shader source code to OpenGL\n");
             return 1;
@@ -104,15 +98,12 @@ int sim_load_gl_shaders()
         glShaderSource(fragment_shader_reference, 1, &fragment_const_char, NULL);
         
         error=glGetError();
-        if(error==GL_NO_ERROR)
-        {
-            printf("All fine while giving fragment shader source to OpenGL\n");
-        }
-        else
+        if(error!=GL_NO_ERROR)
         {
             printf("[ERROR] error while giving fragment shader source code to OpenGL\n");
             return 1;
         }
+
     
     //compiling shader
         //vertex shader
@@ -120,11 +111,7 @@ int sim_load_gl_shaders()
 
         glGetShaderiv(vertex_shader_reference, GL_COMPILE_STATUS, &error);
         
-        if(error==GL_TRUE)
-        {
-            printf("Vertex shader successfully compiled\n");
-        }
-        else
+        if(error!=GL_TRUE)
         {
             printf("[ERROR] error while compiling vertex shader\n");
             
@@ -139,17 +126,15 @@ int sim_load_gl_shaders()
             
             return 1;
         }
+
+
         
         //fragment shader
         glCompileShader(fragment_shader_reference);
         
         glGetShaderiv(fragment_shader_reference, GL_COMPILE_STATUS, &error);
         
-        if(error==GL_TRUE)
-        {
-            printf("Fragment shader successfully compiled\n");
-        }
-        else
+        if(error!=GL_TRUE)
         {
             printf("[ERROR] error while compiling fragment shader\n");
             
@@ -164,6 +149,7 @@ int sim_load_gl_shaders()
             
             return 1;
         }
+
         
         
     //creating shader program
@@ -179,11 +165,7 @@ int sim_load_gl_shaders()
         glAttachShader(shader_program_reference, vertex_shader_reference);
         
         error=glGetError();
-        if(error==GL_NO_ERROR)
-        {
-            printf("All fine while attaching vertex shader\n");
-        }
-        else
+        if(error!=GL_NO_ERROR)
         {
             printf("[ERROR] error while attaching vertex shader\n");
             return 1;
@@ -193,15 +175,12 @@ int sim_load_gl_shaders()
         glAttachShader(shader_program_reference, fragment_shader_reference);
     
         error=glGetError();
-        if(error==GL_NO_ERROR)
-        {
-            printf("All fine while attaching fragment shader\n");
-        }
-        else
+        if(error!=GL_NO_ERROR)
         {
             printf("[ERROR] error while attaching fragment shader\n");
             return 1;
         }
+
         
 
     //link program
@@ -210,11 +189,7 @@ int sim_load_gl_shaders()
 
     glGetProgramiv(shader_program_reference, GL_LINK_STATUS, &error);
     
-    if(error==GL_TRUE)
-    {
-        printf("Program successfully linked\n");
-    }
-    else
+    if(error!=GL_TRUE)
     {
         printf("[ERROR] Program couldn't be linked\n");
         return 1;
@@ -225,15 +200,12 @@ int sim_load_gl_shaders()
     glUseProgram(shader_program_reference);
     
         error=glGetError();
-        if(error==GL_NO_ERROR)
-        {
-            printf("All fine while using program\n");
-        }
-        else
+        if(error!=GL_NO_ERROR)
         {
             printf("[ERROR] error while using program\n");
             return 1;
         }
+
     
     return 0;
 }
