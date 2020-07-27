@@ -6,13 +6,6 @@
 
 long seed=508;//max 8 digits
 
-struct vec3{ //vector struct for Cartesian vectors
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
-};
-
-
 int main()
 {
     if(sim_init()!=0)
@@ -29,27 +22,26 @@ int main()
     //starting wce_time
     wce_time_start();
 
-
     //testing OpenGL
 
     //loading shaders
     sim_load_gl_shaders();
     
-    GLuint VertexArrayID;
-    GLuint VertexBufferID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glGenBuffers(1, &VertexBufferID);
+    GLuint triangle_array_reference;
+    GLuint vertex_buffer_reference;
+    glGenVertexArrays(1, &triangle_array_reference);
+    glGenBuffers(1, &vertex_buffer_reference);
     
-    static const GLfloat g_vertex_buffer_data[] =
+    static const GLfloat triangle_data[] =
     {
         -1.0f,-1.0f,0.0f,
         1.0f,-1.0f,0.0f,
         0.0f,1.0f,0.0f,
     };
     
-    glBindVertexArray(VertexArrayID);
-    glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data,GL_STATIC_DRAW);
+    glBindVertexArray(triangle_array_reference);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_reference);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(triangle_data),triangle_data,GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(0);
     //show shit
@@ -66,7 +58,18 @@ int main()
     glDrawArrays(GL_TRIANGLES,0,3);
     
     sim_swap_buffer();
-    SDL_Delay(3000);
+    
+    //main loop
+    while(1)
+    {
+        
+        //if window is being closed then the simulation ends
+        SDL_PollEvent(&event);
+        if(event.type==SDL_QUIT)
+            break;
+    }
+    
+    
 
     
     SDL_Quit();
