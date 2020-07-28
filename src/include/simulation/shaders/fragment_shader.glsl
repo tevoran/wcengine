@@ -1,9 +1,9 @@
 #version 450
 
-out vec3 color;
+in vec3 fragment_color;
 
-uniform vec3 in_color;
+out vec4 color;
 
 void main() {
-  color = in_color;
+  color = vec4(fragment_color,1.0f);
 }
