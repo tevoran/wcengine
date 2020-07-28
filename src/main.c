@@ -25,18 +25,23 @@ int main()
     //testing OpenGL
 
     //loading shaders
-    sim_load_gl_shaders();
+    GLuint shader_program_reference=sim_load_gl_shaders();
     
     GLuint triangle_array_reference;
     GLuint vertex_buffer_reference;
     glGenVertexArrays(1, &triangle_array_reference);
     glGenBuffers(1, &vertex_buffer_reference);
     
-    static const GLfloat triangle_data[] =
+    static const GLfloat triangle_data[] = //a test square
     {
-        -1.0f,-1.0f,0.0f,
-        1.0f,-1.0f,0.0f,
-        0.0f,1.0f,0.0f,
+        -0.5f,-0.5f,0.0f, //top left
+        0.5f,-0.5f,0.0f, //top right
+        -0.5f,0.5f,0.0f, //bottom left
+
+        -0.5f,0.5f,0.0f, //bottom left
+        0.5f,0.5f,0.0f, //bottom right
+        0.5f,-0.5f,0.0f, //top right
+        
     };
     
     glBindVertexArray(triangle_array_reference);
@@ -55,13 +60,23 @@ int main()
         (void*)0    //array buffer offset
     );
     
-    glDrawArrays(GL_TRIANGLES,0,3);
+    GLint vertex_color_reference=glGetUniformLocation(shader_program_reference, "in_color");
     
-    sim_swap_buffer();
+    float red=0.0f;
     
     //main loop
     while(1)
     {
+
+    //change color;
+    glUniform3f(vertex_color_reference,red, 0.0f,0.0f);
+    red=red+0.00001f;
+    if(red>0.999)
+        red=0.0f;
+
+    glDrawArrays(GL_TRIANGLES,0,6);
+    
+    sim_swap_buffer();
         
         //if window is being closed then the simulation ends
         SDL_PollEvent(&event);

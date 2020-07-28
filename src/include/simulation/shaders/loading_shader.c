@@ -5,7 +5,8 @@
 #include <stdlib.h>
 
 
-int sim_load_gl_shaders()
+//function returns the GLuint program reference
+GLuint sim_load_gl_shaders()
 
 {
     //data used for the function
@@ -207,5 +208,5 @@ int sim_load_gl_shaders()
         }
 
     
-    return 0;
+    return shader_program_reference;
 }

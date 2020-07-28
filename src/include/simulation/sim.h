@@ -16,6 +16,6 @@ void sim_swap_buffer(); //swapping buffers to display what has been drawn
 
 
 //loading shader
-int sim_load_gl_shaders();
+GLuint sim_load_gl_shaders(); //returns the GLuint OpenGL reference for the shader program
 
 #endif
